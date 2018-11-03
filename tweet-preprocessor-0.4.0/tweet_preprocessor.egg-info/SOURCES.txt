@@ -1,5 +1,6 @@
 MANIFEST.in
 README.rst
+setup.cfg
 setup.py
 preprocessor/__init__.py
 preprocessor/api.py

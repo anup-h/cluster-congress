@@ -9,7 +9,6 @@ def read_lexicon(filepath):
 	lex = []
 	f = open(filepath)
 	lex = f.read().splitlines()
-	print(lex)
 	return lex
 
 def analyze_tweets(tweet_col, lexicon):
@@ -37,6 +36,7 @@ def calc_score(tweet_col, word, analyzer):
 
 
 def clean_tweet(tweet):
+
 	return p.clean(tweet)	
 
 
