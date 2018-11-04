@@ -36,7 +36,6 @@ def calc_score(tweet_col, word, analyzer):
 
 
 def clean_tweet(tweet):
-
 	return p.clean(tweet)	
 
 
