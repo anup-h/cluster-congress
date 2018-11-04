@@ -34,6 +34,7 @@ for i in range(len(pca.singular_values_)):
 kmeans = KMeans(n_clusters=2, random_state=0).fit(df)
 labels_and_numbers["Group"] = kmeans.labels_
 
+
 app.layout = html.Div(children=[
     html.H1('PolarBears'),
     html.Div([
@@ -43,6 +44,11 @@ app.layout = html.Div(children=[
         contentious keywords. Then, using unsupervised machine learning methods we transformed and clustered the data. 
         The results are displayed here, with different colors representing the different clusters each point belongs to. 
         Feel free to play around!"""),
+        dcc.Dropdown(
+            id = 'searcher',
+            options=[{'label':a, 'value':b} for (a, b) in zip(labels_and_numbers["Name"], range(len(labels_and_numbers)))],
+            value=-1
+        ),
         dcc.Graph(id='main_scatter'), 
         html.P(children = 'Click on a senator to see data about their political views', id = 'senator_info'),
         html.P(children = '', id = 'top_five'),
@@ -63,8 +69,9 @@ app.layout = html.Div(children=[
 
 @app.callback(
     dash.dependencies.Output('main_scatter', 'figure'),
-    [dash.dependencies.Input('clustering', 'value')])
-def update_graph(clusters):
+    [dash.dependencies.Input('clustering', 'value'), 
+    dash.dependencies.Input('searcher', 'value'), ])
+def update_graph(clusters,  index):
     if clusters==1:
         labels_and_numbers["Group"] = parties["Label"]
         c = ["blue" if i == 0 else ("red" if i==1 else ("green" if i==2 else "orange"))  for i in labels_and_numbers["Party"]]
@@ -72,6 +79,11 @@ def update_graph(clusters):
         kmeans = KMeans(n_clusters=clusters, random_state=0).fit(df)
         labels_and_numbers["Group"] = kmeans.labels_
         c = kmeans.labels_
+    sizes = [10 for _ in range(len(labels_and_numbers))]
+    shapes = ['circle' for _ in range(len(labels_and_numbers))]
+    if index!=-1:
+        shapes[index] = 'x'
+        sizes[index] = 20
     return {
         'data': [
             go.Scatter(
@@ -82,7 +94,10 @@ def update_graph(clusters):
                 hoverinfo = 'text',
                 marker= dict(
                     color = c,
-                    colorscale= "Viridis"
+                    colorscale= "Viridis",
+                    size = sizes,
+                    symbol = shapes,
+
                 ),
                 hoverlabel= dict(
                     bgcolor = ["blue" if i == 0 else ("red" if i==1 else ("green" if i==2 else "orange"))  for i in labels_and_numbers["Party"]]
@@ -91,6 +106,19 @@ def update_graph(clusters):
         ],
         'layout': go.Layout(
             hovermode='closest',
+            xaxis = go.layout.XAxis(
+                showticklabels=False
+            ),
+            yaxis = go.layout.YAxis(
+                showticklabels=False
+            ),
+            margin = go.layout.Margin(
+                l=0,
+                r=200,
+                b=0,
+                t=0,
+                pad=4
+            ),
         )
     }
 
