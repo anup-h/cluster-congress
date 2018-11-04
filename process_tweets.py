@@ -32,7 +32,7 @@ def calc_score(tweet_col, word, analyzer):
 	if count == 0:
 		return 0
 	else:
-		return cursum / count
+		return cursum  / len(tweet_col)
 
 
 def clean_tweet(tweet):
