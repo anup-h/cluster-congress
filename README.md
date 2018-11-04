@@ -14,7 +14,7 @@ With elections just around the corner, we thought it would be interested to exam
 * [Plot.ly](https://plot.ly) - Data Visualization
 
 
-## Authors
+## Team
 
 * **Anup Hiremath** - [Github](https://github.com/anup-h)
 * **Jeffrey Liu** - [Github](https://github.com/franklinfrank)
