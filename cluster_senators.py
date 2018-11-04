@@ -20,6 +20,7 @@ parties = pd.read_csv("party_labels.csv")
 
 labels_and_numbers = pd.read_csv("scores.csv").drop(columns = ['Unnamed: 0'])
 labels_and_numbers["Party"] = parties["Label"]
+labels_and_numbers["Name"] = parties["Name"]
 df = labels_and_numbers.drop(columns = ["Name", "Handle", "Party"])
 df = pd.DataFrame(preprocessing.scale(df),columns = df.columns)
 feature_names = df.columns
